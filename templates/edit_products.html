@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование товара{% endblock title %}
+{% block header %}Редактирование товара{% endblock header %}
+
+{% block content %}
+    <div class="col-md-4">
+        <form method="POST">
+            {% csrf_token %}
+            <p>
+                <label>Введите название</label><br>
+                <input class="form-control" class="form-group" maxlength="50" type="text" name="name" value="{{product.name}}" />
+            </p>
+            <p>
+                <label>Введите количество</label><br>
+                <input class="form-control" min="1" max="999" type="text" name="count" value="{{product.count}}" />
+            </p>
+            <input class="btn btn-primary" type="submit" value="Сохранить" >
+            <a href="{{ link }}" class="btn btn-danger">Назад</a>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование магазина{% endblock title %}
+{% block header %}Редактирование магазина{% endblock header %}
+
+{% block content %}
+    <div class="col-4 offset-md-3">
+        <form method="POST" class="select_hide">
+            {% csrf_token %}
+            {{ form }}
+            <div class="block_btn">
+                <button class="btn btn-lg btn-default btn-primary" type="submit">Сохранить</button>
+                <a href="/" class="btn btn-lg btn-danger">Назад</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

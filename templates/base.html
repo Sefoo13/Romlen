@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+    {% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Модели в Django</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="api">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text_api">New app</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+            <div class="col-12 col-md-4 col-xl-2 bd-sidebar">
+                <form class="login">
+                    {% if user.is_authenticated %}
+                        <div class="info">Логин: {{ user.get_username }}</div>
+                        {% if request.user.is_superuser %}
+                            <div class="info">I am admin</div>
+                        {% block info %}{% endblock info %}
+                        {% if company.count > 0 %}
+                            <div class="info"><strong>Company:</strong> {{ company.count }}</div>
+                        {% endif %}
+                        {% if product.count > 0 %}
+                            <div class="info"><strong>Products:</strong> {{ product.count }}</div>
+                        {% endif %}
+                        {% else %}
+                            <div class="info">I am not admin</div>
+                        {% endif %}
+                        <div class="buttons">
+                            {% if not request.user.is_superuser %}
+                                <a class="btn btn-primary btn-success btn-lg" href="/products/{{request.user.id}}">Товары</a>
+                            {% endif %}
+                            <a class="btn btn-primary btn-danger btn-lg" href="/accounts/password_reset_form/">Сбросить пароль</a>
+                            <!--<a class="btn btn-primary btn-default btn-lg" href="{% url 'logout'%}?next={{request.path}}">Выйти</a>-->
+                            <a class="btn btn-primary btn-default btn-lg" href="{% url 'logout'%}?next=/">Выйти</a>
+
+                        </div>
+                    {% else %}
+                        <h1>Авторизация</h1>
+                        <a class="btn btn-primary btn-default btn-lg" href="{% url 'login'%}?next={{request.path}}">Войти</a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8 offset-md-3">
+                <h1>{% block header %}{% endblock header %}</h1>
+            </div>
+        </div>
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

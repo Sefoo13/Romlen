@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Список товаров{% endblock title %}
+{% block header %}Список товаров{% endblock header %}
+{% block info %}
+        <div class="info"><strong>Магазин:</strong> {{company.name}}</div>
+{% endblock info %}
+{% block content %}
+    <div class="row">
+    {{ form.errors }}
+        <div class="col-8 offset-md-3">
+            {% if company.products %}
+            <table class="table table-dark">
+                <thead class="thead-dark">
+                    <th class="text-center">Id</th>
+                    <th>Название товара</th>
+                    <th>Количество</th>
+                    <th class="text-right">Действие</th>
+                </thead>
+                {% for prod in company.products.all %}
+                <tr>
+                    <td class="text-center">{{ prod.id }}</td>
+                    <td>{{ prod.name }}</td>
+                    <td>{{ prod.count }}</td>
+                    <td class="text-right">
+                        <a href="{% url 'product_edit' company.id prod.id %}">
+                            <button type="button" class="btn_hover btn btn-default btn-sm">
+                              <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                        </a>
+                        <a href="{% url 'product_delete' company.id prod.id %}">
+                            <button type="button" class="btn_hover btn btn-default btn-sm">
+                              <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 offset-md-3">
+            <form method="POST" class="form-group select_hide">
+                {% csrf_token %}
+                {{ form }}
+                <div class="block_btn">
+                    <button class="btn btn-primary btn-default btn-lg">Сохранить</button>
+                    <a href="/" class="btn btn-lg btn-danger">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

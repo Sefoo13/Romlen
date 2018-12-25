@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    {% if request.user.is_superuser %}
+        Список Магазинов
+    {% else %}
+
+    {% endif %}
+{% endblock title %}
+
+{% block header %}
+    {% if request.user.is_superuser %}
+        Список Магазинов
+    {% else %}
+
+    {% endif %}
+{% endblock header %}
+
+{% block content %}
+    {% if request.user.is_superuser %}
+        <div class="row">
+            <div class="col-8 offset-md-3">
+                {% if companies.count > 0 %}
+                <table class="table table-dark">
+                    <thead class="thead-dark">
+                        <th class="text-center">Id</th>
+                        <th>Название магазина</th>
+                        <th class="text-right">Действие</th>
+                    </thead>
+                    <tbody>
+                        {% for shop in companies %}
+                        <tr>
+                            <td class="text-center">
+                                {{ shop.id }}
+                            </td>
+                            <td>
+                                <a href="products/{{ shop.id }}">{{ shop.name }}</a>
+                            </td>
+                            <td class="text-right">
+                                <a href="{% url 'company_edit' shop.id %}">
+                                    <button type="button" class="btn_hover btn btn-default btn-sm">
+                                      <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                <a href="{% url 'company_delete' shop.id %}">
+                                    <button type="button" class="btn_hover btn btn-default btn-sm">
+                                      <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+            <div class="col-8 offset-md-3">
+                {{ form.errors }}
+                <form method="POST" class="help_block">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn btn-primary btn-default btn-lg" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        {{ request.user }}
+    {% endif %}
+{% endblock %}
